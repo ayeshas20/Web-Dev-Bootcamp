@@ -1,0 +1,74 @@
+var button = document.getElementById("enter");
+var input = document.getElementById("userinput");
+var ul = document.querySelector("ul");
+ 
+ 
+function inputLength() {
+    // This will check the length of the string in the input field. 
+    return input.value.length;
+}
+ 
+ 
+function createListElement() {
+    // This will create a li element
+    var li = document.createElement("li");
+ 
+    // append child to new list item (In this case text of input is the child)
+    // I added a space at the end to create some room between list text and remove button. 
+    li.appendChild(document.createTextNode(input.value + " "));
+ 
+ 
+    // This will create a button. 
+    var deleteButton = document.createElement("button");
+ 
+    // This will append child to button (In this case the text "Remove" is the child)
+    deleteButton.appendChild(document.createTextNode("Remove"));
+ 
+ 
+    // This will append the new list item to the ul and adds an event listener
+    ul.appendChild(li).addEventListener("click", listItemDone);
+ 
+    // This will append the new deletebutton to the created list item and adds an event listener. 
+    li.appendChild(deleteButton).addEventListener("click", removeListItem);
+ 
+    // This will reset input value to an empty string. 
+    input.value = "";   
+}
+ 
+ 
+ 
+function addListAfterClick() {
+    // This will check if there is an input at all and then runs 
+    // createListElement function. 
+    if (inputLength() > 0) {
+        createListElement();
+    }
+}
+ 
+ 
+function addListAfterKeypress(event) {
+    // This will check if there is an input AND if the "Enter" key is pressed. 
+    // If so, it runs the createListElement function. 
+    if (inputLength() > 0 && event.keyCode === 13) {
+        createListElement();
+    }
+}
+ 
+function listItemDone(event) {
+    // This targets the clicked list item and adds/removes the class "done".
+    event.target.classList.toggle("done");
+}
+ 
+function removeListItem(event){
+    // This will target the parent of the clicked button. 
+    // Which is the list item and then removes it. 
+    event.target.parentNode.remove();
+}
+ 
+// This puts an eventListener on the enter button and waits for a click
+// When clicked it activates addListAfterClick function. 
+button.addEventListener("click", addListAfterClick);
+ 
+// This puts an eventListener on the input field and waits for a press of the keys
+// If someone starts typing it will activate the addListAfterKeypress function. 
+input.addEventListener("keypress", addListAfterKeypress);
